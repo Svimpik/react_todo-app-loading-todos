@@ -7,6 +7,8 @@ import { TodoList } from './components/todo/TodoList';
 import { Todo } from './types/Todo';
 import { Footer } from './components/footer/Footer';
 // eslint-disable-next-line max-len
+import { ErrorNotification } from './components/errorNotification/ErrorNotification';
+// eslint-disable-next-line max-len
 
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -19,23 +21,13 @@ export const App: React.FC = () => {
         const todo = await getTodos();
 
         setTodos(todo);
-      } catch (error) {
+      } catch {
         setErrorMesage('Unable to load todos');
       }
     };
 
     fetchTodos();
   }, []);
-
-  useEffect(() => {
-    if (errorMesage) {
-      const timer = setTimeout(() => {
-        setErrorMesage('');
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [errorMesage]);
 
   if (!USER_ID) {
     return <UserWarning />;
@@ -81,26 +73,16 @@ export const App: React.FC = () => {
             />
           </form>
         </header>
-
         <TodoList todoList={filteredTodos} />
-
         {/* Hide the footer if there are no todos */}
         {todos.length > 0 && (
           <Footer todos={todos} filterStatus={setStatusFilter} />
         )}
-        <div
-          data-cy="ErrorNotification"
-          className={`notification is-danger is-light has-text-weight-normal ${errorMesage ? '' : 'hidden'}`}
-        >
-          <button
-            data-cy="HideErrorButton"
-            type="button"
-            className="delete"
-            onClick={() => setErrorMesage('')}
-          />
-          {errorMesage}
-        </div>
       </div>
+      <ErrorNotification
+        error={errorMesage}
+        onClose={() => setErrorMesage('')}
+      />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Todo } from '../../types/Todo';
 
 interface Props {
@@ -8,16 +8,12 @@ interface Props {
 }
 
 export const Footer: React.FC<Props> = ({ todos, filterStatus }) => {
-  const [countCompletedTodo, setCountCompletedTodo] = useState(0);
   const [statusFilter, setStatusFilter] = useState<
   'all' | 'active' | 'completed'
   >('all');
 
-  useEffect(() => {
-    const completedCount = todos.filter(todo => !todo.completed).length;
+  const completedCount = todos.filter(todo => !todo.completed).length;
 
-    setCountCompletedTodo(completedCount);
-  }, [todos]);
 
   const handleStatusChange = (status: 'all' | 'active' | 'completed') => {
     filterStatus(status);
@@ -27,7 +23,7 @@ export const Footer: React.FC<Props> = ({ todos, filterStatus }) => {
   return (
     <footer className="todoapp__footer" data-cy="Footer">
       <span className="todo-count" data-cy="TodosCounter">
-        {`${countCompletedTodo} items left`}
+        {`${completedCount} items left`}
       </span>
 
       {/* Active link should have the 'selected' class */}
