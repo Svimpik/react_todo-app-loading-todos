@@ -1,24 +1,18 @@
 /* eslint-disable prettier/prettier */
-import React, { useState } from 'react';
+import React from 'react';
 import { Todo } from '../../types/Todo';
 
 interface Props {
   todos: Todo[];
-  filterStatus: (status: string) => void;
+  statusFilter: string;
+  setFilterStatus: (status: string) => void;
 }
 
-export const Footer: React.FC<Props> = ({ todos, filterStatus }) => {
-  const [statusFilter, setStatusFilter] = useState<
-  'all' | 'active' | 'completed'
-  >('all');
+export const Footer: React.FC<Props> = ({
+  todos, statusFilter, setFilterStatus
+}) => {
 
   const completedCount = todos.filter(todo => !todo.completed).length;
-
-
-  const handleStatusChange = (status: 'all' | 'active' | 'completed') => {
-    filterStatus(status);
-    setStatusFilter(status);
-  };
 
   return (
     <footer className="todoapp__footer" data-cy="Footer">
@@ -32,7 +26,7 @@ export const Footer: React.FC<Props> = ({ todos, filterStatus }) => {
           href="#/"
           className={`filter__link ${statusFilter === 'all' ? 'selected' : ''}`}
           data-cy="FilterLinkAll"
-          onClick={() => handleStatusChange('all')}
+          onClick={() => setFilterStatus('all')}
         >
           All
         </a>
@@ -41,7 +35,7 @@ export const Footer: React.FC<Props> = ({ todos, filterStatus }) => {
           href="#/active"
           className={`filter__link ${statusFilter === 'active' ? 'selected' : ''}`}
           data-cy="FilterLinkActive"
-          onClick={() => handleStatusChange('active')}
+          onClick={() => setFilterStatus('active')}
         >
           Active
         </a>
@@ -50,7 +44,7 @@ export const Footer: React.FC<Props> = ({ todos, filterStatus }) => {
           href="#/completed"
           className={`filter__link ${statusFilter === 'completed' ? 'selected' : ''}`}
           data-cy="FilterLinkCompleted"
-          onClick={() => handleStatusChange('completed')}
+          onClick={() => setFilterStatus('completed')}
         >
           Completed
         </a>

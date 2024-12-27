@@ -76,7 +76,11 @@ export const App: React.FC = () => {
         <TodoList todoList={filteredTodos} />
         {/* Hide the footer if there are no todos */}
         {todos.length > 0 && (
-          <Footer todos={todos} filterStatus={setStatusFilter} />
+          <Footer
+            todos={todos}
+            statusFilter={statusFilter}
+            setFilterStatus={setStatusFilter}
+          />
         )}
       </div>
       <ErrorNotification
